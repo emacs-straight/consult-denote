@@ -1,0 +1,2 @@
+;; Generated package description from consult-denote.el  -*- no-byte-compile: t -*-
+(define-package "consult-denote" "0.0.0.0.20240509.110447" "Use Consult in tandem with Denote" '((emacs "28.1") (denote "2.3.0") (consult "1.4")) :commit "4004bf59e85123ac09d41d1cff09d0fee6883d44" :authors '(("Protesilaos Stavrou" . "info@protesilaos.com")) :maintainer '("Protesilaos Stavrou" . "info@protesilaos.com") :url "https://github.com/protesilaos/consult-denote")
