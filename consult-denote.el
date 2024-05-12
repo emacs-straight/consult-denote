@@ -50,11 +50,13 @@
 ;;    Customise which command they call by modifying the user options
 ;;    `consult-denote-grep-command` and `consult-denote-find-command`.
 ;;
-;; 3. **Include a Denote "source" for `consult-buffer':** This is also
-;;    part of the `consult-denote-mode'.  It adds a new heading/group to
-;;    the interface of the `consult-buffer' command which lists all the
-;;    buffers that visit Denote files.  Narrow to this source by typing
-;;    `D' (capital letter) followed by space in at the empty prompt.
+;; 3. **Include Denote "sources" for `consult-buffer':** This is also
+;;    part of the `consult-denote-mode'.  It adds new headings/groups to
+;;    the interface of the `consult-buffer` command.  Those lists (i) the
+;;    buffers that visit Denote files, (ii) the subdirectories of the
+;;    `denote-directory', and (iii) the silos listed in the value of the
+;;    user option `denote-silo-extras-directories' (for those who opt in
+;;    to that extension).
 ;;
 ;; In the future we may use other features of Consult, based on user
 ;; feedback.
@@ -74,11 +76,13 @@
 
 (defcustom consult-denote-grep-command #'consult-grep
   "Consult-powered Grep command to use for `consult-denote-grep'."
-  :type 'function)
+  :type 'function
+  :package-version '(consult-denote . "0.1.0"))
 
 (defcustom consult-denote-find-command #'consult-find
   "Consult-powered Find command to use for `consult-denote-find'."
-  :type 'function)
+  :type 'function
+  :package-version '(consult-denote . "0.1.0"))
 
 ;;;; Functions
 
@@ -124,7 +128,7 @@ aforementioned function."
             filename)
         input))))
 
-(defun consult-denote-select-file-prompt (files)
+(defun consult-denote-select-linked-file-prompt (files)
   "Prompt for Denote file among FILES."
   (let* ((default-directory denote-directory)
          (file-names (mapcar #'denote-get-file-name-relative-to-denote-directory files)))
@@ -151,20 +155,19 @@ aforementioned function."
   (interactive)
   (funcall-interactively consult-denote-find-command (denote-directory)))
 
-;;;###autoload
-(defun consult-denote-open ()
-  "Find a file in the variable `denote-directory'."
-  (declare (interactive-only t))
-  (interactive)
-  (find-file (consult-denote-file-prompt)))
-
 ;;;; Integrate with denote.el
 
 (defvar consult-denote-buffer-history nil)
 
 (defface consult-denote-buffer
   '((t :inherit font-lock-string-face))
-  "Face for Denote buffers used `consult-buffer'.")
+  "Face for Denote buffers used `consult-buffer'."
+  :package-version '(consult-denote . "0.1.0"))
+
+(defface consult-denote-directory
+  '((t :inherit font-lock-constant-face))
+  "Face for Denote directories used in `consult-buffer'."
+  :package-version '(consult-denote . "0.1.0"))
 
 ;; TODO 2024-05-09: Review suggestion by Philip Kaludercic to use `match-buffers'.
 (defun consult-denote--buffers ()
@@ -190,6 +193,33 @@ aforementioned function."
      :items ,#'consult-denote--buffers)
   "Source for `consult-buffer' to list Denote buffers.")
 
+(defvar consult-denote--subdirectory-source
+  `( :name "Denote subdirectories"
+     :narrow ?S
+     :category file
+     :default t
+     :face consult-denote-directory
+     :history consult-denote-buffer-history
+     :action ,#'dired
+     :state ,#'consult--file-state
+     :items ,#'denote-directory-subdirectories)
+  "Source for `consult-buffer' to list Denote subdirectories.")
+
+(defvar consult-denote--silo-source nil
+  "Source for `consult-buffer' to list Denote silos.")
+
+(with-eval-after-load 'denote-silo-extras
+  (setq consult-denote--silo-source
+    `( :name "Denote silos"
+       :narrow ?L
+       :category file
+       :default t
+       :face consult-denote-directory
+       :history consult-denote-buffer-history
+       :action ,#'dired
+       :state ,#'consult--file-state
+       :items ,denote-silo-extras-directories)))
+
 ;; TODO 2024-03-30: Cover the `denote-org-extras--outline-prompt'.  It
 ;; will be like `consult-outline' in presentation.
 
@@ -204,12 +234,16 @@ aforementioned function."
       ;; We will eventually have a denote-file-prompt-function and
       ;; `funcall' it, but this is okay for now.  Same for all prompts
       (progn
-        (add-to-list 'consult-buffer-sources 'consult-denote--buffer-source)
+        (add-to-list 'consult-buffer-sources 'consult-denote--subdirectory-source :append)
+        (add-to-list 'consult-buffer-sources 'consult-denote--silo-source :append)
+        (add-to-list 'consult-buffer-sources 'consult-denote--buffer-source :append)
         (advice-add #'denote-file-prompt :override #'consult-denote-file-prompt)
-        (advice-add #'denote-link--find-file-prompt :override #'consult-denote-select-file-prompt))
-    (setq consult-buffer-sources (delete 'consult-denote--buffer-source consult-buffer-sources))
+        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt))
+    (setq consult-buffer-sources (delq 'consult-denote--subdirectory-source consult-buffer-sources))
+    (setq consult-buffer-sources (delq 'consult-denote--silo-source consult-buffer-sources))
+    (setq consult-buffer-sources (delq 'consult-denote--buffer-source consult-buffer-sources))
     (advice-remove #'denote-file-prompt #'consult-denote-file-prompt)
-    (advice-remove #'denote-link--find-file-prompt #'consult-denote-select-file-prompt)))
+    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)))
 
 (provide 'consult-denote)
 ;;; consult-denote.el ends here
