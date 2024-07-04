@@ -5,8 +5,8 @@
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
 ;; URL: https://github.com/protesilaos/consult-denote
-;; Version: 0.0.0
-;; Package-Requires: ((emacs "28.1") (denote "2.3.0") (consult "1.4"))
+;; Version: 0.1.1
+;; Package-Requires: ((emacs "28.1") (denote "3.0.3") (consult "1.7"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -122,6 +122,7 @@ Return the absolute path to the matching file."
                  (denote--completion-table 'file relative-files)
                  :state (consult--file-preview)
                  :require-match (unless no-require-match :require-match)
+                 :history 'denote-file-history
                  :prompt prompt))
          (absolute-file (concat (denote-directory) input)))
     ;; NOTE: This block is executed when no-require-match is t. It is useful
@@ -144,6 +145,34 @@ Return the absolute path to the matching file."
      :require-match t
      :state (consult--file-preview)
      :history 'denote-link-find-file-history)))
+
+(defun consult-denote-silo-directory-prompt ()
+  "Like the `denote-silo-extras-directory-prompt' with Consult preview."
+  (let ((default (car denote-silo-extras-directory-history)))
+    (consult--read
+     (denote--completion-table 'file denote-silo-extras-directories)
+     :state (consult--file-preview)
+     :require-match t
+     :prompt (format-prompt "Select a silo" default)
+     :default default
+     :history 'denote-silo-extras-directory-history)))
+
+;; FIXME 2024-07-03: We need a :state function that previews the
+;; current line in the given buffer and then restores the window
+;; configuration.
+(defun consult-denote-outline-prompt (&optional file)
+  "Like `denote-org-extras-outline-prompt' with Consult preview.
+FILE has the same meaning as in `denote-org-extras-outline-prompt'."
+  (let ((current-file (or file buffer-file-name)))
+    (consult--read
+     (denote--completion-table-no-sort 'imenu (denote-org-extras--get-outline current-file))
+     :state (lambda (_action candidate)
+              (with-current-buffer (current-buffer)
+                (when-let ((_ candidate)
+                           (line (string-to-number (car (split-string candidate)))))
+                  (goto-line line (get-file-buffer current-file)))))
+     :prompt (format "Select heading inside `%s': " (propertize (file-name-nondirectory current-file) 'face 'denote-faces-prompt-current-name))
+     :require-match t)))
 
 ;;;; Commands
 
@@ -225,12 +254,6 @@ Return the absolute path to the matching file."
        :state ,#'consult--file-state
        :items ,denote-silo-extras-directories)))
 
-;; TODO 2024-03-30: Cover the `denote-org-extras--outline-prompt'.  It
-;; will be like `consult-outline' in presentation.
-
-;; TODO 2024-03-30: Cover the `denote-silo-extras--directory-prompt'.
-;; It is a regular directory prompt.  Preview the dired buffer.
-
 ;;;###autoload
 (define-minor-mode consult-denote-mode
   "Use Consult in tandem with Denote."
@@ -242,11 +265,16 @@ Return the absolute path to the matching file."
         (dolist (source consult-denote-buffer-sources)
           (add-to-list 'consult-buffer-sources source :append))
         (advice-add #'denote-file-prompt :override #'consult-denote-file-prompt)
-        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt))
+        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt)
+        ;; See FIXME where this function is defined.
+        (advice-add #'denote-org-extras-outline-prompt :override #'consult-denote-outline-prompt)
+        (advice-add #'denote-silo-extras-directory-prompt :override #'consult-denote-silo-directory-prompt))
     (dolist (source consult-denote-buffer-sources)
       (setq consult-buffer-sources (delq source consult-buffer-sources)))
     (advice-remove #'denote-file-prompt #'consult-denote-file-prompt)
-    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)))
+    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)
+    (advice-remove #'denote-org-extras-outline-prompt #'consult-denote-outline-prompt)
+    (advice-remove #'denote-silo-extras-directory-prompt #'consult-denote-silo-directory-prompt)))
 
 (provide 'consult-denote)
 ;;; consult-denote.el ends here
