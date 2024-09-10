@@ -5,7 +5,7 @@
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
 ;; URL: https://github.com/protesilaos/consult-denote
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Package-Requires: ((emacs "28.1") (denote "3.0.3") (consult "1.7"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -189,6 +189,8 @@ FILE has the same meaning as in `denote-org-extras-outline-prompt'."
   (declare (interactive-only t))
   (interactive)
   (funcall-interactively consult-denote-find-command (denote-directory)))
+
+(consult-customize consult-denote-find :state (consult--file-preview))
 
 ;;;; Integrate with denote.el
 
