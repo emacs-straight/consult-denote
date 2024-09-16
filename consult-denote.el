@@ -5,7 +5,7 @@
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
 ;; URL: https://github.com/protesilaos/consult-denote
-;; Version: 0.1.2
+;; Version: 0.2.1
 ;; Package-Requires: ((emacs "28.1") (denote "3.0.3") (consult "1.7"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -70,7 +70,8 @@
   "Simple notes with an efficient file-naming scheme."
   :group 'files
   :group 'minibuffer
-  :link '(url-link :tag "Homepage" " https://github.com/protesilaos/consult-denote"))
+  :link '(info-link "(consult-denote) Top")
+  :link '(url-link :tag "Homepage" "https://protesilaos.com/emacs/consult-denote"))
 
 ;;;; User options
 
@@ -134,6 +135,17 @@ Return the absolute path to the matching file."
     ;; exist, because callers expect one.  They handle a non-existent file
     ;; appropriately.
     absolute-file))
+
+(defun consult-denote-select-linked-file-prompt (files)
+  "Prompt for linked file among FILES."
+  (let ((file-names (mapcar #'denote-get-file-name-relative-to-denote-directory
+                            files)))
+    (consult--read
+     (denote--completion-table 'file file-names)
+     :state (consult--file-preview)
+     :require-match t
+     :history 'denote-link-find-file-history
+     :prompt "Find linked file")))
 
 (defun consult-denote-select-linked-file-prompt (files)
   "Prompt for Denote file among FILES."
@@ -268,12 +280,14 @@ FILE has the same meaning as in `denote-org-extras-outline-prompt'."
           (add-to-list 'consult-buffer-sources source :append))
         (advice-add #'denote-file-prompt :override #'consult-denote-file-prompt)
         (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt)
+        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt)
         ;; See FIXME where this function is defined.
         (advice-add #'denote-org-extras-outline-prompt :override #'consult-denote-outline-prompt)
         (advice-add #'denote-silo-extras-directory-prompt :override #'consult-denote-silo-directory-prompt))
     (dolist (source consult-denote-buffer-sources)
       (setq consult-buffer-sources (delq source consult-buffer-sources)))
     (advice-remove #'denote-file-prompt #'consult-denote-file-prompt)
+    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)
     (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)
     (advice-remove #'denote-org-extras-outline-prompt #'consult-denote-outline-prompt)
     (advice-remove #'denote-silo-extras-directory-prompt #'consult-denote-silo-directory-prompt)))
