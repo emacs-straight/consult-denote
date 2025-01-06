@@ -5,7 +5,7 @@
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
 ;; URL: https://github.com/protesilaos/consult-denote
-;; Version: 0.2.2
+;; Version: 0.2.3
 ;; Package-Requires: ((emacs "28.1") (denote "3.0.3") (consult "1.7"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -242,7 +242,9 @@ FILE has the same meaning as in `denote-org-extras-outline-prompt'."
      :items ,#'denote-directory-subdirectories)
   "Source for `consult-buffer' to list Denote subdirectories.")
 
-(defvar consult-denote-silo-source nil
+;; This must not be nil, as `:items' is mandatory (`plist-member'),
+;; even if its value is nil.
+(defvar consult-denote-silo-source '(:items nil)
   "Source for `consult-buffer' to list Denote silos.")
 
 (with-eval-after-load 'denote-silo-extras
