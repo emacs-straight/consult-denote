@@ -121,12 +121,15 @@ With optional HAS-IDENTIFIER, only show candidates that have an
 identifier.
 
 Return the absolute path to the matching file."
-  (let* ((relative-files (mapcar
+  (let* ((single-dir-p (denote-has-single-denote-directory-p))
+         (default-directory (if single-dir-p ; setting the `default-directory' is needed for the preview
+                                (car (denote-directories))
+                              (denote-directories-get-common-root)))
+         (relative-files (mapcar
                           #'denote-get-file-name-relative-to-denote-directory
                           (denote-directory-files
                            (or denote-file-prompt-use-files-matching-regexp files-matching-regexp)
                            :omit-current nil nil has-identifier)))
-         (default-directory (denote-directory)) ; needed for the preview
          (prompt (format "%s in %s: " (or prompt-text "Select FILE") default-directory))
          (input (consult--read
                  (denote--completion-table 'file relative-files)
@@ -134,7 +137,9 @@ Return the absolute path to the matching file."
                  :require-match (unless no-require-match :require-match)
                  :history 'denote-file-history
                  :prompt prompt))
-         (absolute-file (expand-file-name input (denote-directory))))
+         (absolute-file (if single-dir-p
+                            (expand-file-name input default-directory)
+                          input)))
     ;; NOTE: This block is executed when no-require-match is t. It is useful
     ;; for commands such as `denote-open-or-create` or similar.
     (unless (file-exists-p absolute-file)
@@ -152,8 +157,11 @@ With optional PROMPT-TEXT use it instead of a generic prompt.
 
 With optional FILES-WITH-SEQUENCES as a list of strings, use them as
 completion candidates.  Else use `denote-sequence-get-all-files'."
-  (if-let* ((relative-files (mapcar #'denote-get-file-name-relative-to-denote-directory
-                                    (or files-with-sequences (denote-sequence-get-all-files))))
+  (if-let* ((files (or files-with-sequences (denote-sequence-get-all-files)))
+            (single-dir-p (denote-has-single-denote-directory-p))
+            (relative-files (if single-dir-p
+                                (mapcar #'denote-get-file-name-relative-to-denote-directory files)
+                              files))
             (prompt (format-prompt (or prompt-text "Select FILE with sequence") nil))
             (input (consult--read
                     (denote--completion-table 'file relative-files)
@@ -161,19 +169,27 @@ completion candidates.  Else use `denote-sequence-get-all-files'."
                     :require-match nil
                     :history 'denote-sequence-file-history
                     :prompt prompt)))
-      (expand-file-name input (denote-directory))
+      (if single-dir-p
+          (expand-file-name input (car (denote-directories)))
+        input)
     (error "There are no sequence notes in the `denote-directory'")))
 
-(defun consult-denote-select-linked-file-prompt (files)
-  "Prompt for linked file among FILES."
-  (let ((file-names (mapcar #'denote-get-file-name-relative-to-denote-directory
-                            files)))
-    (consult--read
-     (denote--completion-table 'file file-names)
-     :state (consult--file-preview)
-     :require-match t
-     :history 'denote-link-find-file-history
-     :prompt "Find linked file")))
+(defun consult-denote-select-linked-file-prompt (files &optional prompt-text)
+  "Prompt for linked file among FILES and use optional PROMPT-TEXT."
+  (let* ((single-dir-p (denote-has-single-denote-directory-p))
+         (file-names (if single-dir-p
+                         (mapcar #'denote-get-file-name-relative-to-denote-directory files)
+                       files))
+         (prompt (format-prompt (or prompt-text "Find linked file") nil))
+         (input (consult--read
+                 (denote--completion-table 'file file-names)
+                 :state (consult--file-preview)
+                 :require-match t
+                 :history 'denote-link-find-file-history
+                 :prompt prompt)))
+    (if single-dir-p
+        (expand-file-name input (car (denote-directories)))
+      input)))
 
 (defun consult-denote-silo-directory-prompt ()
   "Like the `denote-silo-extras-directory-prompt' with Consult preview."
@@ -305,8 +321,7 @@ FILE has the same meaning as in `denote-org-extras-outline-prompt'."
         (dolist (source consult-denote-buffer-sources)
           (add-to-list 'consult-buffer-sources source :append))
         (advice-add #'denote-file-prompt :override #'consult-denote-file-prompt)
-        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt)
-        (advice-add #'denote-select-linked-file-prompt :override #'consult-denote-select-linked-file-prompt)
+        (advice-add #'denote-select-from-files-prompt :override #'consult-denote-select-linked-file-prompt)
         ;; See FIXME where this function is defined.
         (advice-add #'denote-org-extras-outline-prompt :override #'consult-denote-outline-prompt)
         (advice-add #'denote-silo-extras-directory-prompt :override #'consult-denote-silo-directory-prompt)
@@ -314,8 +329,7 @@ FILE has the same meaning as in `denote-org-extras-outline-prompt'."
     (dolist (source consult-denote-buffer-sources)
       (setq consult-buffer-sources (delq source consult-buffer-sources)))
     (advice-remove #'denote-file-prompt #'consult-denote-file-prompt)
-    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)
-    (advice-remove #'denote-select-linked-file-prompt #'consult-denote-select-linked-file-prompt)
+    (advice-remove #'denote-select-from-files-prompt #'consult-denote-select-linked-file-prompt)
     (advice-remove #'denote-org-extras-outline-prompt #'consult-denote-outline-prompt)
     (advice-remove #'denote-silo-extras-directory-prompt #'consult-denote-silo-directory-prompt)
     (advice-remove #'denote-sequence-file-prompt #'consult-denote-sequence-file-prompt)))
