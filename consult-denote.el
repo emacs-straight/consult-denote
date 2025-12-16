@@ -121,10 +121,11 @@ With optional HAS-IDENTIFIER, only show candidates that have an
 identifier.
 
 Return the absolute path to the matching file."
-  (let* ((single-dir-p (denote-has-single-denote-directory-p))
+  (let* ((roots (denote-directories))
+         (single-dir-p (null (cdr roots)))
          (default-directory (if single-dir-p ; setting the `default-directory' is needed for the preview
-                                (car (denote-directories))
-                              (denote-directories-get-common-root)))
+                                (car roots)
+                              (denote-directories-get-common-root roots)))
          (relative-files (mapcar
                           #'denote-get-file-name-relative-to-denote-directory
                           (denote-directory-files
@@ -136,11 +137,7 @@ Return the absolute path to the matching file."
                            (or prompt-text "Select FILE")
                            (propertize default-directory 'face 'denote-faces-prompt-current-name))))
          (input (consult--read
-                 (denote-get-completion-table
-                  relative-files
-                  '(category . file)
-                  '(group-function . denote-file-prompt-group)
-                  '(display-sort-function . denote-file-prompt-sort))
+                 (apply 'denote-get-completion-table relative-files denote-file-prompt-extra-metadata)
                  :state (consult--file-preview)
                  :require-match (unless no-require-match :require-match)
                  :history 'denote-file-history
@@ -168,61 +165,60 @@ With optional PROMPT-TEXT use it instead of a generic prompt.
 
 With optional FILES-WITH-SEQUENCES as a list of strings, use them as
 completion candidates.  Else use `denote-sequence-get-all-files'."
-  (if-let* ((files (or files-with-sequences (denote-sequence-get-all-files)))
-            (single-dir-p (denote-has-single-denote-directory-p))
-            (relative-files (if single-dir-p
-                                (mapcar #'denote-get-file-name-relative-to-denote-directory files)
-                              files))
-            (prompt (format-prompt (or prompt-text "Select FILE with sequence") nil))
-            (input (consult--read
-                    (denote-get-completion-table
-                     relative-files
-                     '(category . file)
-                     '(group-function . denote-file-prompt-group)
-                     '(display-sort-function . denote-file-prompt-sort))
-                    :state (consult--file-preview)
-                    :require-match nil
-                    :history 'denote-sequence-file-history
-                    :prompt prompt)))
-      (if single-dir-p
-          (expand-file-name input (car (denote-directories)))
-        input)
-    (error "There are no sequence notes in the `denote-directory'")))
+  (let* ((roots (denote-directories))
+         (single-dir-p (null (cdr roots)))
+         ;; Some external program may use `default-directory' with the
+         ;; relative file paths of the completion candidates.
+         (default-directory (if single-dir-p
+                                (car roots)
+                              (denote-directories-get-common-root roots))))
+    (if-let* ((files (or files-with-sequences (denote-sequence-get-all-files)))
+              (relative-files (if single-dir-p
+                                  (mapcar #'denote-get-file-name-relative-to-denote-directory files)
+                                files))
+              (prompt (format-prompt (or prompt-text "Select FILE with sequence") nil))
+              (input (consult--read
+                      (apply 'denote-get-completion-table relative-files denote-sequence-file-prompt-extra-metadata)
+                      :state (consult--file-preview)
+                      :require-match nil
+                      :history 'denote-sequence-file-history
+                      :prompt prompt)))
+        (if single-dir-p
+            (expand-file-name input (car roots))
+          input)
+      (error "There are no sequence notes in the `denote-directory'"))))
 
 (defun consult-denote-select-linked-file-prompt (files &optional prompt-text)
   "Prompt for linked file among FILES and use optional PROMPT-TEXT."
-  (let* ((single-dir-p (denote-has-single-denote-directory-p))
+  (let* ((roots (denote-directories))
+         (single-dir-p (null (cdr roots)))
          (relative-files (if single-dir-p
                              (mapcar #'denote-get-file-name-relative-to-denote-directory files)
                            files))
          (prompt (format-prompt (or prompt-text "Find linked file") nil))
          (input (consult--read
-                 (denote-get-completion-table
-                  relative-files
-                  '(category . file)
-                  '(group-function . denote-file-prompt-group)
-                  '(display-sort-function . denote-file-prompt-sort))
+                 (apply 'denote-get-completion-table relative-files denote-file-prompt-extra-metadata)
                  :state (consult--file-preview)
                  :require-match t
                  :history 'denote-link-find-file-history
                  :prompt prompt)))
     (if single-dir-p
-        (expand-file-name input (car (denote-directories)))
+        (expand-file-name input (car roots))
       input)))
 
-(defvar denote-silo-extras-directory-history)
-(defvar denote-silo-extras-directories)
+(defvar denote-silo-directory-history)
+(defvar denote-silo-directories)
 
 (defun consult-denote-silo-directory-prompt ()
-  "Like the `denote-silo-extras-directory-prompt' with Consult preview."
-  (let ((default (car denote-silo-extras-directory-history)))
+  "Like the `denote-silo-directory-prompt' with Consult preview."
+  (let ((default (car denote-silo-directory-history)))
     (consult--read
-     (denote-get-completion-table denote-silo-extras-directories '(category . file))
+     (denote-get-completion-table denote-silo-directories '(category . file))
      :state (consult--file-preview)
      :require-match t
      :prompt (format-prompt "Select a silo" default)
      :default default
-     :history 'denote-silo-extras-directory-history)))
+     :history 'denote-silo-directory-history)))
 
 (declare-function denote-org--get-outline "denote-org" (file))
 
