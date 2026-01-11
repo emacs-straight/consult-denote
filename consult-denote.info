@@ -1,4 +1,4 @@
-This is doc871XuD.info, produced by makeinfo version 7.1.1 from
+This is docvDaEjm.info, produced by makeinfo version 7.1.1 from
 consult-denote.texi.
 
 Copyright (C) 2024-2025 Free Software Foundation, Inc.
@@ -20,7 +20,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: doc871XuD.info,  Node: Top,  Next: Overview,  Up: (dir)
+File: docvDaEjm.info,  Node: Top,  Next: Overview,  Up: (dir)
 
 consult-denote: enhance Denote with previews and more
 *****************************************************
@@ -86,7 +86,7 @@ Indices
 
 
 
-File: doc871XuD.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
+File: docvDaEjm.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
 
 1 Overview
 **********
@@ -134,7 +134,7 @@ Include Denote groups in the ‘consult-buffer’ interface
 feedback.
 
 
-File: doc871XuD.info,  Node: Installation,  Next: Sample configuration,  Prev: Overview,  Up: Top
+File: docvDaEjm.info,  Node: Installation,  Next: Sample configuration,  Prev: Overview,  Up: Top
 
 2 Installation
 **************
@@ -145,7 +145,7 @@ File: doc871XuD.info,  Node: Installation,  Next: Sample configuration,  Prev: O
 * Manual installation::
 
 
-File: doc871XuD.info,  Node: GNU ELPA package,  Next: Manual installation,  Up: Installation
+File: docvDaEjm.info,  Node: GNU ELPA package,  Next: Manual installation,  Up: Installation
 
 2.1 GNU ELPA package
 ====================
@@ -164,7 +164,7 @@ archive.  Read:
 <https://protesilaos.com/codelog/2022-05-13-emacs-elpa-devel/>.
 
 
-File: doc871XuD.info,  Node: Manual installation,  Prev: GNU ELPA package,  Up: Installation
+File: docvDaEjm.info,  Node: Manual installation,  Prev: GNU ELPA package,  Up: Installation
 
 2.2 Manual installation
 =======================
@@ -191,7 +191,7 @@ following commands in a shell prompt:
    Everything is in place to set up the package.
 
 
-File: doc871XuD.info,  Node: Sample configuration,  Next: Acknowledgements,  Prev: Installation,  Up: Top
+File: docvDaEjm.info,  Node: Sample configuration,  Next: Acknowledgements,  Prev: Installation,  Up: Top
 
 3 Sample configuration
 **********************
@@ -205,7 +205,7 @@ File: doc871XuD.info,  Node: Sample configuration,  Next: Acknowledgements,  Pre
        (consult-denote-mode 1))
 
 
-File: doc871XuD.info,  Node: Acknowledgements,  Next: GNU Free Documentation License,  Prev: Sample configuration,  Up: Top
+File: docvDaEjm.info,  Node: Acknowledgements,  Next: GNU Free Documentation License,  Prev: Sample configuration,  Up: Top
 
 4 Acknowledgements
 ******************
@@ -217,12 +217,12 @@ Author/maintainer
      Protesilaos Stavrou.
 
 Contributions, ideas, and/or user feedback
-     Damien Cassou, Gianluca Della Vedova, Jeff Valk, Joost Kremers, Kai
-     von Fintel, Peter Prevos, Samuel Flint, gitrh95, hapst3r,
-     johkneisl.
+     Alan Schmitt, Damien Cassou, Gianluca Della Vedova, Jeff Valk,
+     Joost Kremers, Kai von Fintel, Peter Prevos, Samuel Flint, gitrh95,
+     hapst3r, johkneisl.
 
 
-File: doc871XuD.info,  Node: GNU Free Documentation License,  Next: Indices,  Prev: Acknowledgements,  Up: Top
+File: docvDaEjm.info,  Node: GNU Free Documentation License,  Next: Indices,  Prev: Acknowledgements,  Up: Top
 
 5 GNU Free Documentation License
 ********************************
@@ -704,7 +704,7 @@ software license, such as the GNU General Public License, to permit
 their use in free software.
 
 
-File: doc871XuD.info,  Node: Indices,  Prev: GNU Free Documentation License,  Up: Top
+File: docvDaEjm.info,  Node: Indices,  Prev: GNU Free Documentation License,  Up: Top
 
 6 Indices
 *********
@@ -716,7 +716,7 @@ File: doc871XuD.info,  Node: Indices,  Prev: GNU Free Documentation License,  Up
 * Concept index::
 
 
-File: doc871XuD.info,  Node: Function index,  Next: Variable index,  Up: Indices
+File: docvDaEjm.info,  Node: Function index,  Next: Variable index,  Up: Indices
 
 6.1 Function index
 ==================
@@ -729,7 +729,7 @@ File: doc871XuD.info,  Node: Function index,  Next: Variable index,  Up: Indices
 * consult-denote-mode:                   Overview.             (line 18)
 
 
-File: doc871XuD.info,  Node: Variable index,  Next: Concept index,  Prev: Function index,  Up: Indices
+File: docvDaEjm.info,  Node: Variable index,  Next: Concept index,  Prev: Function index,  Up: Indices
 
 6.2 Variable index
 ==================
@@ -742,7 +742,7 @@ File: doc871XuD.info,  Node: Variable index,  Next: Concept index,  Prev: Functi
 * consult-denote-grep-command:           Overview.             (line 25)
 
 
-File: doc871XuD.info,  Node: Concept index,  Prev: Variable index,  Up: Indices
+File: docvDaEjm.info,  Node: Concept index,  Prev: Variable index,  Up: Indices
 
 6.3 Concept index
 =================
@@ -763,11 +763,11 @@ Node: GNU ELPA package5360
 Node: Manual installation5929
 Node: Sample configuration6730
 Node: Acknowledgements7082
-Node: GNU Free Documentation License7575
-Node: Indices32717
-Node: Function index32893
-Node: Variable index33257
-Node: Concept index33643
+Node: GNU Free Documentation License7589
+Node: Indices32731
+Node: Function index32907
+Node: Variable index33271
+Node: Concept index33657
 
 End Tag Table
 
