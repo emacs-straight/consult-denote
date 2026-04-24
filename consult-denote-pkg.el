@@ -1,2 +1,2 @@
-;; Generated package description from consult-denote.el  -*- mode: lisp-data; no-byte-compile: t -*-
-(define-package "consult-denote" "0.4.2.0.20260122.100152" "Use Consult in tandem with Denote" '((emacs "28.1") (denote "4.0.0") (consult "2.2")) :commit "40f90c887ab3fe4c032648a99f3fe6fd82b76161" :authors '(("Protesilaos Stavrou" . "info@protesilaos.com")) :maintainer '("Protesilaos Stavrou" . "info@protesilaos.com") :url "https://github.com/protesilaos/consult-denote")
+;; Generated package description from consult-denote.el  -*- mode: lisp-data; no-byte-compile: t; lexical-binding:t -*-
+(define-package "consult-denote" "0.4.2.0.20260423.93857" "Use Consult in tandem with Denote" '((emacs "28.1") (denote "4.0.0") (consult "2.2")) :commit "0cbf6c4140f3b60351a860d7df096aef64de783a" :authors '(("Protesilaos Stavrou" . "info@protesilaos.com")) :maintainer '("Protesilaos Stavrou" . "info@protesilaos.com") :url "https://github.com/protesilaos/consult-denote")

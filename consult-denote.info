@@ -1,4 +1,4 @@
-This is consult-denote.info, produced by makeinfo version 7.1.1 from
+This is consult-denote.info, produced by makeinfo version 7.2 from
 consult-denote.texi.
 
 Copyright (C) 2024-2026 Free Software Foundation, Inc.
@@ -84,7 +84,6 @@ Indices
 * Variable index::
 * Concept index::
 
-
 
 File: consult-denote.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
 
@@ -125,10 +124,10 @@ Include Denote groups in the ‘consult-buffer’ interface
      more sections in its presentation.  Those include a group for
      Denote buffers, another with subdirectories of the
      ‘denote-directory’, and a third with the user-defined Denote silos
-     (for those user option ‘denote-silo-extras-directories’ (for those
-     who opt in to that extension, as described in the Denote manual).
-     The user option ‘consult-denote-buffer-sources’ can be configured
-     to control which sources are added to ‘consult-buffer’.
+     (for those user option ‘denote-silo-directories’ (for those who opt
+     in to that extension, as described in the Denote manual).  The user
+     option ‘consult-denote-buffer-sources’ can be configured to control
+     which sources are added to ‘consult-buffer’.
 
    In the future we may use other features of Consult, based on user
 feedback.
@@ -753,25 +752,25 @@ File: consult-denote.info,  Node: Concept index,  Prev: Variable index,  Up: Ind
 * Contributors:                          Acknowledgements.      (line 6)
 * Installation instructions:             Installation.          (line 6)
 
-
 
 Tag Table:
-Node: Top872
-Node: Overview2996
-Node: Installation5188
-Node: GNU ELPA package5380
-Node: Manual installation5954
-Node: Sample configuration6760
-Node: Acknowledgements7117
-Node: GNU Free Documentation License7629
-Node: Indices32776
-Node: Function index32957
-Node: Variable index33326
-Node: Concept index33717
+Node: Top870
+Node: Overview2993
+Node: Installation5179
+Node: GNU ELPA package5371
+Node: Manual installation5945
+Node: Sample configuration6751
+Node: Acknowledgements7108
+Node: GNU Free Documentation License7620
+Node: Indices32767
+Node: Function index32948
+Node: Variable index33317
+Node: Concept index33708
 
 End Tag Table
 
 
 Local Variables:
 coding: utf-8
+Info-documentlanguage: en
 End:
