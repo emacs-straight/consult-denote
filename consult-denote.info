@@ -38,8 +38,8 @@ Copyright (C) 2024-2026 Free Software Foundation, Inc.
      (a) The FSF’s Back-Cover Text is: “You have the freedom to copy and
      modify this GNU manual.”
 
-   This manual, written by Protesilaos Stavrou, describes the
-customization options for the Emacs package called ‘consult-denote’ (or
+   This manual, written by Protesilaos, describes the customization
+options for the Emacs package called ‘consult-denote’ (or
 ‘consult-denote.el’), and provides every other piece of information
 pertinent to it.
 
@@ -213,7 +213,7 @@ File: consult-denote.info,  Node: Acknowledgements,  Next: GNU Free Documentatio
 matters.
 
 Author/maintainer
-     Protesilaos Stavrou.
+     Protesilaos.
 
 Contributions, ideas, and/or user feedback
      Alan Schmitt, Damien Cassou, Gianluca Della Vedova, Jeff Valk,
@@ -755,17 +755,17 @@ File: consult-denote.info,  Node: Concept index,  Prev: Variable index,  Up: Ind
 
 Tag Table:
 Node: Top870
-Node: Overview2993
-Node: Installation5179
-Node: GNU ELPA package5371
-Node: Manual installation5945
-Node: Sample configuration6751
-Node: Acknowledgements7108
-Node: GNU Free Documentation License7620
-Node: Indices32767
-Node: Function index32948
-Node: Variable index33317
-Node: Concept index33708
+Node: Overview2985
+Node: Installation5171
+Node: GNU ELPA package5363
+Node: Manual installation5937
+Node: Sample configuration6743
+Node: Acknowledgements7100
+Node: GNU Free Documentation License7604
+Node: Indices32751
+Node: Function index32932
+Node: Variable index33301
+Node: Concept index33692
 
 End Tag Table
 
