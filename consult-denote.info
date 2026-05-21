@@ -1,4 +1,4 @@
-This is consult-denote.info, produced by makeinfo version 7.2 from
+This is consult-denote.info, produced by makeinfo version 7.1.1 from
 consult-denote.texi.
 
 Copyright (C) 2024-2026 Free Software Foundation, Inc.
@@ -44,11 +44,11 @@ options for the Emacs package called ‘consult-denote’ (or
 pertinent to it.
 
    The documentation furnished herein corresponds to stable version
-0.4.0, released on 2025-04-15.  Any reference to a newer feature which
+0.5.0, released on 2026-05-20.  Any reference to a newer feature which
 does not yet form part of the latest tagged commit, is explicitly marked
 as such.
 
-   Current development target is 0.5.0-dev.
+   Current development target is 0.6.0-dev.
 
    • Package name (GNU ELPA): ‘consult-denote’
    • Official manual: <https://protesilaos.com/emacs/consult-denote>
@@ -83,6 +83,7 @@ Indices
 * Function index::
 * Variable index::
 * Concept index::
+
 
 
 File: consult-denote.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
@@ -752,25 +753,25 @@ File: consult-denote.info,  Node: Concept index,  Prev: Variable index,  Up: Ind
 * Contributors:                          Acknowledgements.      (line 6)
 * Installation instructions:             Installation.          (line 6)
 
+
 
 Tag Table:
-Node: Top870
-Node: Overview2985
-Node: Installation5171
-Node: GNU ELPA package5363
-Node: Manual installation5937
-Node: Sample configuration6743
-Node: Acknowledgements7100
-Node: GNU Free Documentation License7604
-Node: Indices32751
-Node: Function index32932
-Node: Variable index33301
-Node: Concept index33692
+Node: Top872
+Node: Overview2988
+Node: Installation5174
+Node: GNU ELPA package5366
+Node: Manual installation5940
+Node: Sample configuration6746
+Node: Acknowledgements7103
+Node: GNU Free Documentation License7607
+Node: Indices32754
+Node: Function index32935
+Node: Variable index33304
+Node: Concept index33695
 
 End Tag Table
 
 
 Local Variables:
 coding: utf-8
-Info-documentlanguage: en
 End:
