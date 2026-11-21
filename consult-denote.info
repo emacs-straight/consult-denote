@@ -52,8 +52,6 @@ as such.
 
    • Package name (GNU ELPA): ‘consult-denote’
    • Official manual: <https://protesilaos.com/emacs/consult-denote>
-   • Change log:
-     <https://protesilaos.com/emacs/consult-denote-changelog>
    • Git repository: <https://github.com/protesilaos/consult-denote>
    • Backronym: Consult-Orchestrated Navigation and Selection of
      Unambiguous Targets...denote.
@@ -757,17 +755,17 @@ File: consult-denote.info,  Node: Concept index,  Prev: Variable index,  Up: Ind
 
 Tag Table:
 Node: Top872
-Node: Overview2988
-Node: Installation5174
-Node: GNU ELPA package5366
-Node: Manual installation5940
-Node: Sample configuration6746
-Node: Acknowledgements7103
-Node: GNU Free Documentation License7616
-Node: Indices32763
-Node: Function index32944
-Node: Variable index33313
-Node: Concept index33704
+Node: Overview2907
+Node: Installation5093
+Node: GNU ELPA package5285
+Node: Manual installation5859
+Node: Sample configuration6665
+Node: Acknowledgements7022
+Node: GNU Free Documentation License7535
+Node: Indices32682
+Node: Function index32863
+Node: Variable index33232
+Node: Concept index33623
 
 End Tag Table
 
